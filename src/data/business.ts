@@ -8,7 +8,7 @@ export const business = {
   contactName: 'Aaron',
   serviceArea: 'From Lymington to Poole, Dorset and surrounding areas',
   baseLocation: 'Christchurch, Dorset',
-  postcode: 'BH65LD',
+  postcode: 'BH6 5LD',
   primaryService: 'Professional oven cleaning and small repairs',
   whatsappLink: 'https://wa.me/447572319948',
   description: 'Professional oven cleaning services across Dorset. Non-caustic, safe cleaning for ovens, range cookers, AGAs, hobs, extractors, microwaves and BBQs.',
