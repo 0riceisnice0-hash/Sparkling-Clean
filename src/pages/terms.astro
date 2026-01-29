@@ -1,0 +1,129 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { business } from '../data/business';
+---
+
+<Layout 
+  title="Terms and Conditions"
+  description="Terms and conditions for Sparkling Clean Oven Cleaning services. Please read before booking."
+  canonicalUrl="/terms/"
+>
+  <section class="legal-page">
+    <div class="container">
+      <div class="legal-content">
+        <h1>Terms and Conditions</h1>
+        <p class="last-updated">Last updated: 2024</p>
+        
+        <h2>1. Introduction</h2>
+        <p>These terms and conditions govern the provision of oven cleaning and related services by {business.name} ("we", "us", "our") to you ("the customer", "you").</p>
+        <p>By booking our services, you agree to these terms and conditions.</p>
+        
+        <h2>2. Services</h2>
+        <p>We provide professional oven, hob, extractor, microwave, range cooker, AGA, and BBQ cleaning services, as well as minor oven repairs (bulb and element replacement).</p>
+        
+        <h2>3. Booking and Appointments</h2>
+        <ul>
+          <li>Bookings can be made by phone, email, or through our website</li>
+          <li>We will confirm the date and approximate time window for your appointment</li>
+          <li>We aim to arrive within the agreed time window but may occasionally be delayed due to previous appointments</li>
+          <li>We will contact you if we are running significantly late</li>
+        </ul>
+        
+        <h2>4. Pricing and Payment</h2>
+        <ul>
+          <li>Prices are quoted before work begins and are based on the type and condition of the appliance</li>
+          <li>The final price may vary if the appliance differs from what was described or requires additional work</li>
+          <li>Any additional costs will be discussed and agreed before proceeding</li>
+          <li>Payment is due upon completion of the work</li>
+          <li>We accept cash and bank transfer</li>
+        </ul>
+        
+        <h2>5. Cancellation</h2>
+        <ul>
+          <li>Please give us as much notice as possible if you need to cancel or reschedule</li>
+          <li>We understand that circumstances change and will try to accommodate rescheduling requests</li>
+          <li>Repeated no-shows or last-minute cancellations may result in a cancellation fee</li>
+        </ul>
+        
+        <h2>6. Access and Preparation</h2>
+        <ul>
+          <li>Please ensure the oven is cool before our arrival</li>
+          <li>We require access to a water supply and electrical outlet</li>
+          <li>Please ensure there is adequate space to work around the appliance</li>
+          <li>You or another adult must be present during the service</li>
+        </ul>
+        
+        <h2>7. Care and Liability</h2>
+        <ul>
+          <li>We take great care with all appliances, but some are older or more fragile than others</li>
+          <li>We cannot be held liable for pre-existing damage or defects</li>
+          <li>If you are aware of any issues with your appliance, please inform us before we begin</li>
+          <li>We carry appropriate liability insurance – please ask for details</li>
+        </ul>
+        
+        <h2>8. Results</h2>
+        <ul>
+          <li>We aim to restore your appliance to the best possible condition</li>
+          <li>Some heavy staining or burnt-on deposits may not be completely removable</li>
+          <li>We will inform you of any limitations during the cleaning process</li>
+        </ul>
+        
+        <h2>9. Complaints</h2>
+        <p>If you are not satisfied with our service, please contact us immediately so we can address your concerns. We take all feedback seriously and aim to resolve issues promptly.</p>
+        
+        <h2>10. Changes to Terms</h2>
+        <p>We may update these terms from time to time. The current version will always be available on our website.</p>
+        
+        <h2>11. Contact</h2>
+        <p>For any questions about these terms, please contact us:</p>
+        <ul>
+          <li>Phone: <a href={`tel:${business.phone}`}>{business.phoneFormatted}</a></li>
+          <li>Email: <a href={`mailto:${business.email}`}>{business.email}</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .legal-page {
+    padding: calc(var(--header-height) + var(--space-2xl)) 0 var(--space-3xl);
+  }
+  
+  .legal-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .legal-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-sm);
+  }
+  
+  .last-updated {
+    color: var(--color-text-subtle);
+    font-size: 0.875rem;
+    margin-bottom: var(--space-2xl);
+  }
+  
+  .legal-content h2 {
+    font-size: 1.25rem;
+    color: var(--color-gold);
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-sm);
+  }
+  
+  .legal-content p {
+    line-height: 1.7;
+  }
+  
+  .legal-content ul {
+    margin: var(--space-sm) 0 var(--space-md);
+    padding-left: var(--space-lg);
+  }
+  
+  .legal-content li {
+    margin-bottom: var(--space-xs);
+    color: var(--color-text-muted);
+  }
+</style>

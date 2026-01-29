@@ -1,0 +1,427 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import CTASection from '../../components/CTASection.astro';
+import Icon from '../../components/Icon.astro';
+import { areas } from '../../data/areas';
+import { services, featuredServices } from '../../data/services';
+import { popularPrices, pricingNote } from '../../data/prices';
+import { business } from '../../data/business';
+
+export function getStaticPaths() {
+  return areas.map(area => ({
+    params: { slug: area.slug },
+    props: { area },
+  }));
+}
+
+interface Props {
+  area: typeof areas[0];
+}
+
+const { area } = Astro.props;
+
+// Find nearby areas for internal linking
+const nearbyAreas = areas.filter(a => area.nearby.includes(a.name));
+
+// Local FAQ
+const localFaqs = [
+  { 
+    q: `Do you cover all of ${area.name}?`, 
+    a: `Yes, we cover the whole of ${area.name} and surrounding areas. Whether you're in the centre or the outskirts, we can help.` 
+  },
+  { 
+    q: 'How quickly can you come?', 
+    a: `As we're based in Christchurch, we can often offer appointments within a few days. Call us to check availability for ${area.name}.` 
+  },
+  { 
+    q: 'What payment methods do you accept?', 
+    a: 'We accept cash and bank transfer. Payment is due on completion of the work.' 
+  },
+];
+
+// Schema for local service
+const localServiceSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": `${business.name} - ${area.name}`,
+  "description": `Professional oven cleaning services in ${area.name}, Dorset. ${area.description}`,
+  "telephone": business.phone,
+  "email": business.email,
+  "areaServed": {
+    "@type": "Place",
+    "name": area.name
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Christchurch",
+    "addressRegion": "Dorset",
+    "postalCode": business.postcode,
+    "addressCountry": "GB"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Oven Cleaning Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": `Oven Cleaning in ${area.name}`
+        },
+        "price": "55",
+        "priceCurrency": "GBP"
+      }
+    ]
+  }
+};
+---
+
+<Layout 
+  title={`Oven Cleaning in ${area.name}`}
+  description={`Professional oven cleaning in ${area.name}, Dorset. ${area.description} Call ${business.phoneFormatted} to book.`}
+  canonicalUrl={`/areas/${area.slug}/`}
+>
+  <Hero 
+    headline={`Oven Cleaning in ${area.name}`}
+    subheadline={`Professional oven cleaning services for ${area.name} and surrounding areas.`}
+    compact
+  />
+  
+  <section class="section">
+    <div class="container">
+      <div class="area-intro">
+        <p>{area.description}</p>
+        <p>We provide the full range of oven cleaning services to homes in {area.name}, including single and double ovens, range cookers, AGAs, hobs, extractors, microwaves, and barbecues.</p>
+      </div>
+      
+      <div class="area-grid">
+        <div class="area-main">
+          <h2>Our Services in {area.name}</h2>
+          <div class="services-grid">
+            {featuredServices.slice(0, 4).map(service => (
+              <a href={`/Sparkling-Clean/services/${service.slug}/`} class="service-link card">
+                <Icon name={service.icon} size={24} />
+                <span>{service.title}</span>
+              </a>
+            ))}
+          </div>
+          <a href="/Sparkling-Clean/services/" class="btn btn-secondary mt-lg">View All Services</a>
+          
+          <h2>Why Choose Us in {area.name}</h2>
+          <ul class="why-list">
+            <li>
+              <Icon name="location" size={20} />
+              <div>
+                <strong>Local Service</strong>
+                <p>Based in Christchurch, {area.name} is well within our coverage area with quick response times.</p>
+              </div>
+            </li>
+            <li>
+              <Icon name="shield" size={20} />
+              <div>
+                <strong>Safe Products</strong>
+                <p>We use non-caustic, fume-free cleaning products that are safe for your home and family.</p>
+              </div>
+            </li>
+            <li>
+              <Icon name="sparkle" size={20} />
+              <div>
+                <strong>Professional Results</strong>
+                <p>Our thorough cleaning process leaves your oven looking and performing like new.</p>
+              </div>
+            </li>
+            <li>
+              <Icon name="check" size={20} />
+              <div>
+                <strong>Fully Insured</strong>
+                <p>We carry appropriate liability insurance for complete peace of mind (ask us for details).</p>
+              </div>
+            </li>
+          </ul>
+          
+          <h2>Pricing Guide</h2>
+          <div class="price-summary">
+            {popularPrices.map(item => (
+              <div class="price-item">
+                <span class="price-name">{item.name}</span>
+                <span class="price-value">{item.price}</span>
+              </div>
+            ))}
+          </div>
+          <p class="price-note">{pricingNote}</p>
+          <a href="/Sparkling-Clean/prices/" class="btn btn-secondary">View Full Price List</a>
+        </div>
+        
+        <div class="area-sidebar">
+          <div class="sidebar-card card card-gold">
+            <h3>Book in {area.name}</h3>
+            <p>Ready for a sparkling clean oven? Get in touch today.</p>
+            <a href={`tel:${business.phone}`} class="btn btn-primary" style="width: 100%; margin-bottom: var(--space-sm);">
+              Call {business.contactName}
+            </a>
+            <a href="/Sparkling-Clean/contact/" class="btn btn-outline-gold" style="width: 100%;">
+              Book Online
+            </a>
+          </div>
+          
+          {nearbyAreas.length > 0 && (
+            <div class="nearby-areas">
+              <h3>Nearby Areas</h3>
+              <ul>
+                {nearbyAreas.map(nearby => (
+                  <li>
+                    <a href={`/Sparkling-Clean/areas/${nearby.slug}/`}>
+                      <Icon name="location" size={16} />
+                      {nearby.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          
+          <div class="map-placeholder">
+            <div class="placeholder-image" style="aspect-ratio: 1; border-radius: var(--radius-md);">
+              <span>Map</span>
+            </div>
+            <p class="map-note">Map placeholder for {area.name}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="section bg-elevated">
+    <div class="container">
+      <div class="section-header">
+        <h2>Frequently Asked Questions</h2>
+        <div class="accent-line"></div>
+      </div>
+      <div class="faq-grid">
+        {localFaqs.map(faq => (
+          <div class="faq-item card">
+            <h3>{faq.q}</h3>
+            <p>{faq.a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <CTASection 
+    headline={`Book Your ${area.name} Oven Clean Today`}
+    subheadline={`Professional oven cleaning with fast, friendly service.`}
+  />
+</Layout>
+
+<script type="application/ld+json" set:html={JSON.stringify(localServiceSchema)} />
+
+<style>
+  .area-intro {
+    max-width: 800px;
+    margin: 0 auto var(--space-2xl);
+    text-align: center;
+  }
+  
+  .area-intro p {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
+  
+  .area-grid {
+    display: grid;
+    gap: var(--space-2xl);
+  }
+  
+  @media (min-width: 1024px) {
+    .area-grid {
+      grid-template-columns: 1fr 350px;
+    }
+  }
+  
+  .area-main h2 {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-md);
+    margin-top: var(--space-xl);
+  }
+  
+  .area-main h2:first-child {
+    margin-top: 0;
+  }
+  
+  .services-grid {
+    display: grid;
+    gap: var(--space-sm);
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .service-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+  
+  .service-link:hover {
+    border-color: var(--color-gold);
+    transform: translateX(4px);
+  }
+  
+  .service-link :global(svg) {
+    color: var(--color-gold);
+  }
+  
+  .service-link span {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+  
+  .why-list {
+    list-style: none;
+  }
+  
+  .why-list li {
+    display: flex;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+    padding: var(--space-md);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  
+  .why-list :global(svg) {
+    color: var(--color-gold);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  
+  .why-list strong {
+    display: block;
+    color: var(--color-text);
+    margin-bottom: var(--space-xs);
+  }
+  
+  .why-list p {
+    margin: 0;
+    font-size: 0.9375rem;
+  }
+  
+  .price-summary {
+    display: grid;
+    gap: var(--space-sm);
+    grid-template-columns: repeat(2, 1fr);
+    margin-bottom: var(--space-md);
+  }
+  
+  .price-item {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+  
+  .price-name {
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+  }
+  
+  .price-value {
+    color: var(--color-gold);
+    font-weight: 600;
+  }
+  
+  .price-note {
+    font-size: 0.875rem;
+    color: var(--color-text-subtle);
+    margin-bottom: var(--space-md);
+  }
+  
+  .sidebar-card {
+    margin-bottom: var(--space-lg);
+  }
+  
+  .sidebar-card h3 {
+    font-size: 1.125rem;
+    margin-bottom: var(--space-sm);
+  }
+  
+  .sidebar-card p {
+    font-size: 0.9375rem;
+    margin-bottom: var(--space-md);
+  }
+  
+  .nearby-areas {
+    margin-bottom: var(--space-lg);
+  }
+  
+  .nearby-areas h3 {
+    font-size: 1rem;
+    color: var(--color-text);
+    margin-bottom: var(--space-sm);
+  }
+  
+  .nearby-areas ul {
+    list-style: none;
+  }
+  
+  .nearby-areas li {
+    margin-bottom: var(--space-xs);
+  }
+  
+  .nearby-areas a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+  
+  .nearby-areas a:hover {
+    color: var(--color-gold);
+  }
+  
+  .nearby-areas :global(svg) {
+    color: var(--color-gold);
+  }
+  
+  .map-placeholder {
+    text-align: center;
+  }
+  
+  .map-note {
+    font-size: 0.75rem;
+    color: var(--color-text-subtle);
+    margin-top: var(--space-xs);
+  }
+  
+  .faq-grid {
+    display: grid;
+    gap: var(--space-md);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  @media (min-width: 768px) {
+    .faq-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .faq-item h3 {
+    font-size: 1rem;
+    color: var(--color-gold);
+    margin-bottom: var(--space-sm);
+  }
+  
+  .faq-item p {
+    font-size: 0.9375rem;
+    margin: 0;
+  }
+</style>

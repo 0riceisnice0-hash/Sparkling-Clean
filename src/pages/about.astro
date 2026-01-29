@@ -1,0 +1,192 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import CTASection from '../components/CTASection.astro';
+import Icon from '../components/Icon.astro';
+import { business, trustBullets } from '../data/business';
+---
+
+<Layout 
+  title="About Us"
+  description="Meet Aaron and Sparkling Clean Oven Cleaning. Local, professional oven cleaning service based in Christchurch, Dorset. Serving Lymington to Poole."
+  canonicalUrl="/about/"
+>
+  <Hero 
+    headline="About Sparkling Clean"
+    subheadline="Local, professional oven cleaning you can trust."
+    compact
+  />
+  
+  <section class="section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-content">
+          <h2>Meet {business.contactName}</h2>
+          <div class="accent-line" style="margin-left: 0;"></div>
+          
+          <p>Welcome to Sparkling Clean Oven Cleaning. I'm {business.contactName}, and I provide professional oven cleaning services across Dorset, from Lymington to Poole and everywhere in between.</p>
+          
+          <p>Based in {business.baseLocation}, I understand that your oven is the heart of your kitchen. Whether you're a busy family, a landlord preparing for new tenants, or simply someone who wants their kitchen looking its best, I'm here to help.</p>
+          
+          <p>I use only safe, non-caustic cleaning products that are fume-free and family-friendly. No harsh chemicals, no unpleasant smells – just professional results that speak for themselves.</p>
+          
+          <p>Every oven is different, which is why I take the time to properly clean every component. Racks, trays, door glass (including between the panels), fan covers – everything comes out and gets the attention it deserves.</p>
+          
+          <p>I take pride in leaving no mess behind. When I'm finished, you'll have a sparkling clean oven and a tidy kitchen.</p>
+        </div>
+        
+        <div class="about-image">
+          <div class="placeholder-image" style="aspect-ratio: 4/5; border-radius: var(--radius-lg);">
+            <Icon name="sparkle" size={64} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="section bg-elevated">
+    <div class="container">
+      <div class="values-section">
+        <div class="section-header">
+          <h2>Why Choose Sparkling Clean</h2>
+          <div class="accent-line"></div>
+        </div>
+        
+        <div class="values-grid">
+          {trustBullets.map(bullet => (
+            <div class="value-card card">
+              <Icon name="check" size={24} className="value-icon" />
+              <p>{bullet}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="section">
+    <div class="container">
+      <div class="content-block">
+        <h2>Serving Dorset</h2>
+        <div class="accent-line" style="margin-left: 0;"></div>
+        
+        <p>I cover a wide area across Dorset and the New Forest, including:</p>
+        
+        <ul class="area-list">
+          <li>Christchurch and surrounding areas</li>
+          <li>Bournemouth, Boscombe, and Southbourne</li>
+          <li>Poole and Parkstone</li>
+          <li>Lymington and the New Forest</li>
+          <li>New Milton and Highcliffe</li>
+          <li>Ringwood, Ferndown, and Wimborne</li>
+        </ul>
+        
+        <p>Not sure if I cover your area? Give me a call and I'll let you know.</p>
+        
+        <a href="/Sparkling-Clean/areas/" class="btn btn-secondary">View All Areas</a>
+      </div>
+    </div>
+  </section>
+  
+  <CTASection 
+    headline={`Book Your Clean with ${business.contactName}`}
+    subheadline="Professional oven cleaning that makes your kitchen sparkle."
+  />
+</Layout>
+
+<style>
+  .about-grid {
+    display: grid;
+    gap: var(--space-2xl);
+    align-items: center;
+  }
+  
+  @media (min-width: 768px) {
+    .about-grid {
+      grid-template-columns: 1.5fr 1fr;
+    }
+  }
+  
+  .about-content h2 {
+    margin-bottom: var(--space-sm);
+  }
+  
+  .about-content p {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
+  
+  .about-image .placeholder-image {
+    color: var(--color-gold);
+  }
+  
+  .values-grid {
+    display: grid;
+    gap: var(--space-md);
+  }
+  
+  @media (min-width: 640px) {
+    .values-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .values-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .value-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+  }
+  
+  .value-card :global(.value-icon) {
+    color: var(--color-gold);
+    flex-shrink: 0;
+  }
+  
+  .value-card p {
+    margin: 0;
+    color: var(--color-text);
+    font-weight: 500;
+  }
+  
+  .content-block {
+    max-width: 700px;
+  }
+  
+  .content-block h2 {
+    margin-bottom: var(--space-sm);
+  }
+  
+  .area-list {
+    list-style: none;
+    columns: 2;
+    column-gap: var(--space-lg);
+    margin: var(--space-md) 0 var(--space-lg);
+  }
+  
+  @media (max-width: 480px) {
+    .area-list {
+      columns: 1;
+    }
+  }
+  
+  .area-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: var(--space-sm);
+    color: var(--color-text-muted);
+  }
+  
+  .area-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-gold);
+  }
+</style>

@@ -1,0 +1,144 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+  canonicalUrl?: string;
+  ogImage?: string;
+  noIndex?: boolean;
+}
+
+const { 
+  title, 
+  description = 'Professional oven cleaning services across Dorset. Non-caustic, safe cleaning for ovens, range cookers, AGAs, hobs, extractors, microwaves and BBQs.',
+  canonicalUrl,
+  ogImage = '/images/og-default.jpg',
+  noIndex = false
+} = Astro.props;
+
+const siteUrl = 'https://0riceisnice0-hash.github.io/Sparkling-Clean';
+const fullCanonicalUrl = canonicalUrl ? `${siteUrl}${canonicalUrl}` : Astro.url.href;
+const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
+---
+
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <title>{title} | Sparkling Clean Oven Cleaning</title>
+    <meta name="description" content={description} />
+    
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href={fullCanonicalUrl} />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/Sparkling-Clean/favicon.svg" />
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={fullCanonicalUrl} />
+    <meta property="og:title" content={`${title} | Sparkling Clean Oven Cleaning`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={fullOgImage} />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:site_name" content="Sparkling Clean Oven Cleaning" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${title} | Sparkling Clean Oven Cleaning`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={fullOgImage} />
+    
+    <!-- Additional SEO -->
+    <meta name="author" content="Sparkling Clean Oven Cleaning" />
+    <meta name="geo.region" content="GB-DOR" />
+    <meta name="geo.placename" content="Christchurch, Dorset" />
+    
+    <!-- Preload fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Schema.org LocalBusiness markup -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "@id": "https://0riceisnice0-hash.github.io/Sparkling-Clean",
+        "name": "Sparkling Clean Oven Cleaning",
+        "description": "Professional oven cleaning services across Dorset. Non-caustic, safe cleaning for ovens, range cookers, AGAs, hobs, extractors, microwaves and BBQs.",
+        "url": "https://0riceisnice0-hash.github.io/Sparkling-Clean",
+        "telephone": "07572319948",
+        "email": "sparklingclean365@outlook.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Christchurch",
+          "addressRegion": "Dorset",
+          "postalCode": "BH6 5LD",
+          "addressCountry": "GB"
+        },
+        "areaServed": {
+          "@type": "GeoCircle",
+          "geoMidpoint": {
+            "@type": "GeoCoordinates",
+            "latitude": 50.7355,
+            "longitude": -1.7795
+          },
+          "geoRadius": "30000"
+        },
+        "priceRange": "££",
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          "opens": "08:00",
+          "closes": "18:00"
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Oven Cleaning Services",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Single Oven Cleaning",
+                "description": "Professional deep cleaning for single ovens"
+              },
+              "price": "55",
+              "priceCurrency": "GBP"
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Double Oven Cleaning",
+                "description": "Professional deep cleaning for double ovens"
+              },
+              "price": "65",
+              "priceCurrency": "GBP"
+            }
+          ]
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <Header />
+    
+    <main id="main-content">
+      <slot />
+    </main>
+    
+    <Footer />
+  </body>
+</html>

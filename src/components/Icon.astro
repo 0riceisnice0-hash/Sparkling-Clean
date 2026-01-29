@@ -1,0 +1,71 @@
+---
+export interface Props {
+  name: string;
+  size?: number;
+  className?: string;
+}
+
+const { name, size = 24, className = '' } = Astro.props;
+
+// Icon paths for each service/feature
+const icons: Record<string, string> = {
+  oven: `<rect x="4" y="2" width="16" height="20" rx="2"/><line x1="4" y1="8" x2="20" y2="8"/><circle cx="12" cy="14" r="3"/><line x1="8" y1="5" x2="8" y2="5.01"/><line x1="12" y1="5" x2="12" y2="5.01"/>`,
+  
+  range: `<rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><circle cx="7" cy="15" r="2"/><circle cx="17" cy="15" r="2"/><circle cx="6" cy="7" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="14" cy="7" r="1"/><circle cx="18" cy="7" r="1"/>`,
+  
+  aga: `<rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><circle cx="8" cy="14" r="2"/><circle cx="16" cy="14" r="2"/><rect x="7" y="5" width="4" height="3" rx="1"/><rect x="13" y="5" width="4" height="3" rx="1"/>`,
+  
+  hob: `<rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="8" cy="10" r="2"/><circle cx="16" cy="10" r="2"/><circle cx="8" cy="14" r="1.5"/><circle cx="16" cy="14" r="1.5"/>`,
+  
+  extractor: `<rect x="4" y="6" width="16" height="8" rx="2"/><line x1="8" y1="14" x2="8" y2="18"/><line x1="16" y1="14" x2="16" y2="18"/><line x1="4" y1="10" x2="20" y2="10"/><circle cx="12" cy="8" r="1"/>`,
+  
+  microwave: `<rect x="2" y="4" width="20" height="16" rx="2"/><rect x="5" y="7" width="10" height="8" rx="1"/><circle cx="18" cy="9" r="1"/><circle cx="18" cy="13" r="1"/><line x1="18" y1="16" x2="18" y2="16.01"/>`,
+  
+  bbq: `<ellipse cx="12" cy="8" rx="8" ry="4"/><path d="M4 8v4c0 2.2 3.6 4 8 4s8-1.8 8-4V8"/><line x1="8" y1="16" x2="8" y2="20"/><line x1="16" y1="16" x2="16" y2="20"/><line x1="6" y1="20" x2="18" y2="20"/>`,
+  
+  repairs: `<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>`,
+  
+  sparkle: `<path d="M12 2l1.5 4.5L18 8l-4.5 1.5L12 14l-1.5-4.5L6 8l4.5-1.5L12 2z"/><path d="M5 16l.75 2.25L8 19l-2.25.75L5 22l-.75-2.25L2 19l2.25-.75L5 16z"/><path d="M19 12l.5 1.5 1.5.5-1.5.5-.5 1.5-.5-1.5L17 14l1.5-.5.5-1.5z"/>`,
+  
+  phone: `<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>`,
+  
+  email: `<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>`,
+  
+  location: `<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>`,
+  
+  check: `<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>`,
+  
+  shield: `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>`,
+  
+  clock: `<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>`,
+  
+  calendar: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>`,
+  
+  star: `<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>`,
+  
+  arrow: `<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>`,
+  
+  whatsapp: `<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>`,
+};
+---
+
+<svg 
+  width={size} 
+  height={size} 
+  viewBox="0 0 24 24" 
+  fill="none" 
+  stroke="currentColor" 
+  stroke-width="1.5" 
+  stroke-linecap="round" 
+  stroke-linejoin="round"
+  class:list={['icon', className]}
+  aria-hidden="true"
+>
+  <Fragment set:html={icons[name] || icons.sparkle} />
+</svg>
+
+<style>
+  .icon {
+    flex-shrink: 0;
+  }
+</style>

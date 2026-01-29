@@ -1,0 +1,170 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import CTASection from '../components/CTASection.astro';
+---
+
+<Layout 
+  title="Gallery"
+  description="See the results of our professional oven cleaning. Before and after photos showing the transformation. See why our customers love Sparkling Clean."
+  canonicalUrl="/gallery/"
+>
+  <Hero 
+    headline="Our Work"
+    subheadline="See the sparkling results of our professional oven cleaning."
+    compact
+  />
+  
+  <section class="section">
+    <div class="container">
+      <div class="gallery-intro">
+        <p>Nothing demonstrates the quality of our work better than seeing the transformation for yourself. Here are some examples of our professional oven cleaning results.</p>
+      </div>
+      
+      <div class="section-header">
+        <h2>Before & After</h2>
+        <div class="accent-line"></div>
+        <p>Slide to compare the transformation.</p>
+      </div>
+      
+      <BeforeAfter />
+    </div>
+  </section>
+  
+  <section class="section bg-elevated">
+    <div class="container">
+      <div class="section-header">
+        <h2>Gallery</h2>
+        <div class="accent-line"></div>
+        <p>A selection of our recent oven cleaning work.</p>
+      </div>
+      
+      <div class="gallery-grid">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <div class="gallery-item">
+            <div class="placeholder-image">
+              <span>Oven Clean {i}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <p class="gallery-note">Real project photos will be added here. These are placeholder images.</p>
+    </div>
+  </section>
+  
+  <section class="section">
+    <div class="container">
+      <div class="content-block text-center">
+        <h2>The Sparkling Clean Difference</h2>
+        <div class="accent-line"></div>
+        
+        <div class="difference-grid">
+          <div class="difference-item">
+            <h3>Thorough Cleaning</h3>
+            <p>We don't just wipe surfaces. Every rack, tray, and removable part is individually cleaned using our specialist dip tank.</p>
+          </div>
+          <div class="difference-item">
+            <h3>Door Glass</h3>
+            <p>We clean between the glass panels – that cloudy appearance disappears, revealing crystal-clear glass.</p>
+          </div>
+          <div class="difference-item">
+            <h3>Professional Products</h3>
+            <p>Our non-caustic cleaning solutions are fume-free and safe for your home, but highly effective on grease.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <CTASection 
+    headline="Want These Results?"
+    subheadline="Book your professional oven clean today and see the difference for yourself."
+  />
+</Layout>
+
+<style>
+  .gallery-intro {
+    max-width: 700px;
+    margin: 0 auto var(--space-2xl);
+    text-align: center;
+  }
+  
+  .gallery-intro p {
+    font-size: 1.125rem;
+  }
+  
+  .gallery-grid {
+    display: grid;
+    gap: var(--space-md);
+  }
+  
+  @media (min-width: 480px) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .gallery-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .gallery-item {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+  }
+  
+  .gallery-item .placeholder-image {
+    width: 100%;
+    height: 100%;
+    font-size: 0.875rem;
+  }
+  
+  .gallery-note {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-text-subtle);
+    margin-top: var(--space-lg);
+  }
+  
+  .content-block {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .difference-grid {
+    display: grid;
+    gap: var(--space-lg);
+    margin-top: var(--space-xl);
+    text-align: left;
+  }
+  
+  @media (min-width: 768px) {
+    .difference-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .difference-item {
+    padding: var(--space-lg);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  
+  .difference-item h3 {
+    font-size: 1.125rem;
+    color: var(--color-gold);
+    margin-bottom: var(--space-sm);
+  }
+  
+  .difference-item p {
+    margin: 0;
+    font-size: 0.9375rem;
+  }
+</style>
