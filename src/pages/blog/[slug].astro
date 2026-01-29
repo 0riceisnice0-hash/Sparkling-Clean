@@ -1,0 +1,312 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CTASection from '../../components/CTASection.astro';
+import { blogPosts } from '../../data/blog';
+import { business } from '../../data/business';
+
+export function getStaticPaths() {
+  return blogPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: typeof blogPosts[0];
+}
+
+const { post } = Astro.props;
+
+// Get related posts
+const relatedPosts = blogPosts.filter(p => p.slug !== post.slug).slice(0, 3);
+
+// Format date
+const formattedDate = new Date(post.date).toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric'
+});
+
+// Article schema
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": post.title,
+  "description": post.metaDescription,
+  "datePublished": post.date,
+  "author": {
+    "@type": "Organization",
+    "name": business.name
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": business.name
+  }
+};
+---
+
+<Layout 
+  title={post.title}
+  description={post.metaDescription}
+  canonicalUrl={`/blog/${post.slug}/`}
+>
+  <article class="blog-post">
+    <header class="post-header">
+      <div class="container">
+        <div class="post-header-content">
+          <div class="post-meta">
+            <time datetime={post.date}>{formattedDate}</time>
+            <span class="meta-divider">•</span>
+            <span class="post-tags">
+              {post.tags.slice(0, 3).map((tag, i) => (
+                <span class="tag">{tag}{i < Math.min(post.tags.length, 3) - 1 ? ', ' : ''}</span>
+              ))}
+            </span>
+          </div>
+          <h1>{post.title}</h1>
+          <p class="post-excerpt">{post.excerpt}</p>
+        </div>
+      </div>
+    </header>
+    
+    <div class="post-image-wrapper">
+      <div class="container">
+        <div class="post-image placeholder-image">
+          <span>Blog Featured Image</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="post-body">
+      <div class="container">
+        <div class="post-content" set:html={post.content.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>')} />
+      </div>
+    </div>
+    
+    <footer class="post-footer">
+      <div class="container">
+        <div class="post-cta card card-gold">
+          <h3>Need Your Oven Cleaned?</h3>
+          <p>Book your professional oven cleaning with {business.name} today.</p>
+          <div class="cta-buttons">
+            <a href={`tel:${business.phone}`} class="btn btn-primary">
+              Call {business.contactName}
+            </a>
+            <a href="/Sparkling-Clean/contact/" class="btn btn-outline-gold">
+              Book Online
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </article>
+  
+  {relatedPosts.length > 0 && (
+    <section class="section bg-elevated">
+      <div class="container">
+        <div class="section-header">
+          <h2>Related Articles</h2>
+          <div class="accent-line"></div>
+        </div>
+        <div class="related-grid">
+          {relatedPosts.map(related => (
+            <a href={`/Sparkling-Clean/blog/${related.slug}/`} class="related-card card">
+              <time datetime={related.date}>
+                {new Date(related.date).toLocaleDateString('en-GB', { 
+                  day: 'numeric', 
+                  month: 'short', 
+                  year: 'numeric' 
+                })}
+              </time>
+              <h3>{related.title}</h3>
+              <span class="read-more">Read more →</span>
+            </a>
+          ))}
+        </div>
+        <div class="text-center mt-lg">
+          <a href="/Sparkling-Clean/blog/" class="btn btn-secondary">View All Articles</a>
+        </div>
+      </div>
+    </section>
+  )}
+  
+  <CTASection style="subtle" />
+</Layout>
+
+<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+<style>
+  .blog-post {
+    padding-top: var(--header-height);
+  }
+  
+  .post-header {
+    padding: var(--space-2xl) 0 var(--space-xl);
+    background: var(--color-bg-elevated);
+  }
+  
+  .post-header-content {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .post-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+    font-size: 0.875rem;
+  }
+  
+  .post-meta time {
+    color: var(--color-gold);
+  }
+  
+  .meta-divider {
+    color: var(--color-text-subtle);
+  }
+  
+  .post-tags {
+    color: var(--color-text-muted);
+  }
+  
+  .post-header h1 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    line-height: 1.2;
+    margin-bottom: var(--space-md);
+  }
+  
+  .post-excerpt {
+    font-size: 1.125rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+  
+  .post-image-wrapper {
+    margin-top: calc(-1 * var(--space-lg));
+    padding: 0 0 var(--space-xl);
+  }
+  
+  .post-image {
+    max-width: 800px;
+    margin: 0 auto;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+  }
+  
+  .post-body {
+    padding-bottom: var(--space-2xl);
+  }
+  
+  .post-content {
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.0625rem;
+    line-height: 1.8;
+  }
+  
+  .post-content :global(h2) {
+    font-size: 1.5rem;
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-md);
+    color: var(--color-text);
+  }
+  
+  .post-content :global(h3) {
+    font-size: 1.25rem;
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-sm);
+    color: var(--color-gold);
+  }
+  
+  .post-content :global(p) {
+    margin-bottom: var(--space-md);
+  }
+  
+  .post-content :global(ul),
+  .post-content :global(ol) {
+    margin: var(--space-md) 0;
+    padding-left: var(--space-lg);
+  }
+  
+  .post-content :global(li) {
+    margin-bottom: var(--space-xs);
+    color: var(--color-text-muted);
+  }
+  
+  .post-content :global(strong) {
+    color: var(--color-text);
+  }
+  
+  .post-footer {
+    padding-bottom: var(--space-xl);
+  }
+  
+  .post-cta {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .post-cta h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--space-sm);
+  }
+  
+  .post-cta p {
+    margin-bottom: var(--space-md);
+  }
+  
+  .cta-buttons {
+    display: flex;
+    gap: var(--space-sm);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .related-grid {
+    display: grid;
+    gap: var(--space-md);
+  }
+  
+  @media (min-width: 768px) {
+    .related-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .related-card {
+    text-decoration: none;
+    transition: all var(--transition-normal);
+  }
+  
+  .related-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-gold);
+  }
+  
+  .related-card time {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-xs);
+  }
+  
+  .related-card h3 {
+    font-size: 1rem;
+    color: var(--color-text);
+    margin-bottom: var(--space-sm);
+    line-height: 1.4;
+  }
+  
+  .read-more {
+    font-size: 0.875rem;
+    color: var(--color-gold);
+    font-weight: 500;
+  }
+</style>

@@ -1,0 +1,190 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import PriceCard from '../components/PriceCard.astro';
+import CTASection from '../components/CTASection.astro';
+import { prices, pricingNote } from '../data/prices';
+import { business } from '../data/business';
+---
+
+<Layout 
+  title="Prices"
+  description="Clear, honest pricing for professional oven cleaning. Single oven £55, double oven £65. View our full price list for ovens, range cookers, AGAs, hobs and more."
+  canonicalUrl="/prices/"
+>
+  <Hero 
+    headline="Our Prices"
+    subheadline="Clear, honest pricing with no hidden fees. Quality oven cleaning at fair prices."
+    compact
+  />
+  
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-2">
+        {prices.map(category => (
+          <PriceCard category={category} />
+        ))}
+      </div>
+      
+      <div class="pricing-note-box">
+        <p class="pricing-note">
+          <strong>Please note:</strong> {pricingNote}
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <section class="section bg-elevated">
+    <div class="container">
+      <div class="content-block">
+        <h2>What's Included</h2>
+        <div class="accent-line" style="margin-left: 0;"></div>
+        
+        <div class="included-grid">
+          <div class="included-item">
+            <h3>Full Oven Clean</h3>
+            <ul>
+              <li>All racks and trays removed and cleaned</li>
+              <li>Door glass cleaned, including between panels</li>
+              <li>Interior thoroughly cleaned</li>
+              <li>Fan and fan cover cleaned</li>
+              <li>Oven seals wiped down</li>
+              <li>External surfaces polished</li>
+            </ul>
+          </div>
+          <div class="included-item">
+            <h3>Hob Clean</h3>
+            <ul>
+              <li>All burner caps and pan supports removed</li>
+              <li>Each component individually cleaned</li>
+              <li>Hob surface deep cleaned</li>
+              <li>Control knobs cleaned</li>
+              <li>Surrounding worktop wiped</li>
+            </ul>
+          </div>
+          <div class="included-item">
+            <h3>Extractor Clean</h3>
+            <ul>
+              <li>Filters removed and degreased</li>
+              <li>Hood exterior cleaned</li>
+              <li>Light covers cleaned</li>
+              <li>Grease traps emptied</li>
+            </ul>
+          </div>
+          <div class="included-item">
+            <h3>Our Promise</h3>
+            <ul>
+              <li>Safe, non-caustic cleaning products</li>
+              <li>No mess left behind</li>
+              <li>Fully insured service</li>
+              <li>Final price confirmed before we start</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="section">
+    <div class="container">
+      <div class="content-block text-center">
+        <h2>Need a Quote?</h2>
+        <div class="accent-line"></div>
+        <p>Every oven is different. If you're unsure about pricing or have a combination of appliances to clean, get in touch for a personalised quote.</p>
+        <div class="quote-buttons">
+          <a href={`tel:${business.phone}`} class="btn btn-primary btn-lg">
+            Call {business.contactName}
+          </a>
+          <a href="/Sparkling-Clean/contact/" class="btn btn-outline-gold btn-lg">
+            Get a Quote
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <CTASection style="subtle" />
+</Layout>
+
+<style>
+  .pricing-note-box {
+    max-width: 600px;
+    margin: var(--space-xl) auto 0;
+    padding: var(--space-lg);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border-gold);
+    border-radius: var(--radius-md);
+    text-align: center;
+  }
+  
+  .pricing-note {
+    margin: 0;
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+  }
+  
+  .pricing-note strong {
+    color: var(--color-gold);
+  }
+  
+  .content-block {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .content-block h2 {
+    margin-bottom: var(--space-sm);
+  }
+  
+  .included-grid {
+    display: grid;
+    gap: var(--space-lg);
+    margin-top: var(--space-lg);
+  }
+  
+  @media (min-width: 768px) {
+    .included-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  .included-item {
+    padding: var(--space-lg);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  
+  .included-item h3 {
+    font-size: 1.125rem;
+    color: var(--color-gold);
+    margin-bottom: var(--space-md);
+  }
+  
+  .included-item ul {
+    list-style: none;
+  }
+  
+  .included-item li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: var(--space-xs);
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+  }
+  
+  .included-item li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-gold);
+  }
+  
+  .quote-buttons {
+    display: flex;
+    gap: var(--space-sm);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: var(--space-lg);
+  }
+</style>

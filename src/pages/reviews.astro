@@ -1,0 +1,84 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import ReviewCard from '../components/ReviewCard.astro';
+import CTASection from '../components/CTASection.astro';
+import { reviews, reviewsNote } from '../data/reviews';
+---
+
+<Layout 
+  title="Reviews"
+  description="Read what our customers say about Sparkling Clean Oven Cleaning. Real feedback from satisfied customers across Dorset."
+  canonicalUrl="/reviews/"
+>
+  <Hero 
+    headline="Customer Reviews"
+    subheadline="Don't just take our word for it. Here's what our customers say."
+    compact
+  />
+  
+  <section class="section">
+    <div class="container">
+      <p class="reviews-note">{reviewsNote}</p>
+      
+      <div class="grid grid-3">
+        {reviews.map(review => (
+          <ReviewCard review={review} />
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <section class="section bg-elevated">
+    <div class="container">
+      <div class="content-block text-center">
+        <h2>Leave a Review</h2>
+        <div class="accent-line"></div>
+        <p>Had your oven cleaned by Sparkling Clean? We'd love to hear from you. Your feedback helps us improve and helps others find a great oven cleaning service.</p>
+        <div class="review-cta">
+          <p class="review-instructions">Please get in touch to share your experience.</p>
+          <a href="/Sparkling-Clean/contact/" class="btn btn-outline-gold">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <CTASection 
+    headline="Join Our Happy Customers"
+    subheadline="Book your professional oven clean today."
+  />
+</Layout>
+
+<style>
+  .reviews-note {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-text-subtle);
+    margin-bottom: var(--space-xl);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    display: inline-block;
+    width: 100%;
+  }
+  
+  .content-block {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .content-block h2 {
+    margin-bottom: var(--space-sm);
+  }
+  
+  .review-cta {
+    margin-top: var(--space-lg);
+  }
+  
+  .review-instructions {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+  }
+</style>

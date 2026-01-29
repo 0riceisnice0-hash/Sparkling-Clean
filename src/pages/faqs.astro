@@ -1,0 +1,204 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import CTASection from '../components/CTASection.astro';
+import { business } from '../data/business';
+
+const faqs = [
+  {
+    question: 'How long does an oven clean take?',
+    answer: 'A single oven typically takes around 1 to 1.5 hours. Double ovens and range cookers take longer – usually 2 to 3 hours depending on size and condition. We\'ll give you a time estimate when you book.',
+  },
+  {
+    question: 'Do I need to be home during the clean?',
+    answer: 'Yes, we recommend you\'re home while we work. However, you don\'t need to supervise – we\'ll work independently and keep any disruption to a minimum.',
+  },
+  {
+    question: 'What products do you use?',
+    answer: 'We use professional-grade, non-caustic cleaning products that are fume-free and safe for your home. They\'re effective on grease and grime but won\'t harm you, your family, or your pets.',
+  },
+  {
+    question: 'Can you clean the hob and extractor too?',
+    answer: 'Yes! We clean hobs and extractor hoods as well as ovens. You can book these together for a complete kitchen appliance clean, or separately.',
+  },
+  {
+    question: 'How often should I have my oven professionally cleaned?',
+    answer: 'Most households benefit from a professional clean once or twice a year. If you cook frequently or do a lot of roasting and grilling, you might want to book more often.',
+  },
+  {
+    question: 'Do you clean between the oven door glass?',
+    answer: 'Yes! We dismantle the oven door (where possible) to clean between the glass panels. This removes that cloudy, dirty appearance that\'s impossible to reach normally.',
+  },
+  {
+    question: 'Is there anything I need to prepare?',
+    answer: 'Just make sure the oven has cooled down before we arrive. We\'ll handle everything else. It\'s helpful if the area around the oven is accessible.',
+  },
+  {
+    question: 'What payment methods do you accept?',
+    answer: 'We accept cash and bank transfer. Payment is due on completion of the work.',
+  },
+  {
+    question: 'Do you offer discounts for regular bookings?',
+    answer: 'Get in touch to discuss regular cleaning arrangements. We\'re happy to work out a schedule that suits you.',
+  },
+  {
+    question: 'What areas do you cover?',
+    answer: `We cover a wide area across Dorset, from Lymington to Poole. This includes Christchurch, Bournemouth, New Milton, Ringwood, Ferndown, Wimborne, and surrounding areas. Not sure if we cover your area? Give us a call.`,
+  },
+  {
+    question: 'Can you do end of tenancy oven cleans?',
+    answer: 'Absolutely. We work with both landlords and tenants to ensure ovens meet end of tenancy requirements. We provide receipts suitable for deposit protection purposes.',
+  },
+  {
+    question: 'What if I need to cancel or reschedule?',
+    answer: 'Please give us as much notice as possible if you need to change your booking. We understand that plans change – just get in touch and we\'ll rearrange.',
+  },
+];
+
+// JSON-LD FAQ Schema
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
+    }
+  }))
+};
+---
+
+<Layout 
+  title="FAQs"
+  description="Frequently asked questions about professional oven cleaning. Learn about our process, products, pricing and booking."
+  canonicalUrl="/faqs/"
+>
+  <Hero 
+    headline="Frequently Asked Questions"
+    subheadline="Everything you need to know about our oven cleaning service."
+    compact
+  />
+  
+  <section class="section">
+    <div class="container">
+      <div class="faq-list">
+        {faqs.map((faq, index) => (
+          <details class="faq-item">
+            <summary class="faq-question">
+              <span>{faq.question}</span>
+              <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </summary>
+            <div class="faq-answer">
+              <p>{faq.answer}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <section class="section bg-elevated">
+    <div class="container">
+      <div class="content-block text-center">
+        <h2>Still Have Questions?</h2>
+        <div class="accent-line"></div>
+        <p>Can't find the answer you're looking for? Get in touch and we'll be happy to help.</p>
+        <div class="contact-buttons">
+          <a href={`tel:${business.phone}`} class="btn btn-primary">
+            Call {business.contactName}
+          </a>
+          <a href="/Sparkling-Clean/contact/" class="btn btn-outline-gold">
+            Send a Message
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <CTASection style="subtle" />
+</Layout>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+<style>
+  .faq-list {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  
+  .faq-item {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: border-color var(--transition-fast);
+  }
+  
+  .faq-item[open] {
+    border-color: var(--color-gold);
+  }
+  
+  .faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--color-text);
+    list-style: none;
+  }
+  
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+  
+  .faq-question span {
+    font-size: 1.0625rem;
+  }
+  
+  .faq-icon {
+    color: var(--color-gold);
+    flex-shrink: 0;
+    transition: transform var(--transition-fast);
+  }
+  
+  .faq-item[open] .faq-icon {
+    transform: rotate(180deg);
+  }
+  
+  .faq-answer {
+    padding: 0 var(--space-lg) var(--space-lg);
+  }
+  
+  .faq-answer p {
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+  
+  .content-block {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .content-block h2 {
+    margin-bottom: var(--space-sm);
+  }
+  
+  .contact-buttons {
+    display: flex;
+    gap: var(--space-sm);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: var(--space-lg);
+  }
+</style>

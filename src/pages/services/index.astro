@@ -1,0 +1,111 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import CTASection from '../../components/CTASection.astro';
+import { services } from '../../data/services';
+---
+
+<Layout 
+  title="Our Services"
+  description="Professional oven, range cooker, AGA, hob, extractor, microwave, and BBQ cleaning services across Dorset. Expert cleaning that makes appliances sparkle."
+  canonicalUrl="/services/"
+>
+  <Hero 
+    headline="Our Professional Cleaning Services"
+    subheadline="Expert cleaning for all your kitchen appliances. From ovens to barbecues, we make them sparkle."
+    compact
+  />
+  
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-3">
+        {services.map(service => (
+          <ServiceCard 
+            title={service.title}
+            description={service.shortDescription}
+            icon={service.icon}
+            href={`/Sparkling-Clean/services/${service.slug}/`}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <section class="section bg-elevated">
+    <div class="container">
+      <div class="content-block">
+        <h2>Why Choose Professional Cleaning?</h2>
+        <div class="accent-line" style="margin-left: 0;"></div>
+        
+        <p>Professional oven cleaning delivers results that are impossible to achieve with DIY methods. Here's why our customers choose us:</p>
+        
+        <div class="benefits-grid">
+          <div class="benefit">
+            <h3>Specialist Equipment</h3>
+            <p>We use professional-grade equipment and solutions not available in shops. Our heated dip tank removes even the most stubborn burnt-on grease.</p>
+          </div>
+          <div class="benefit">
+            <h3>Safe Products</h3>
+            <p>Our non-caustic, fume-free cleaning products are safe for you, your family, and your home. No harsh chemicals, no unpleasant smells.</p>
+          </div>
+          <div class="benefit">
+            <h3>Thorough Clean</h3>
+            <p>We remove all racks, trays, and removable parts for individual cleaning. We clean the door glass, including between the panels.</p>
+          </div>
+          <div class="benefit">
+            <h3>Time Saving</h3>
+            <p>A professional clean typically takes around an hour. You get your time back while we do the hard work.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <CTASection />
+</Layout>
+
+<style>
+  .content-block {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .content-block h2 {
+    margin-bottom: var(--space-sm);
+  }
+  
+  .content-block > p {
+    font-size: 1.125rem;
+    margin-bottom: var(--space-xl);
+  }
+  
+  .benefits-grid {
+    display: grid;
+    gap: var(--space-lg);
+  }
+  
+  @media (min-width: 768px) {
+    .benefits-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  .benefit {
+    padding: var(--space-lg);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  
+  .benefit h3 {
+    font-size: 1.125rem;
+    color: var(--color-gold);
+    margin-bottom: var(--space-sm);
+  }
+  
+  .benefit p {
+    margin: 0;
+    font-size: 0.9375rem;
+  }
+</style>

@@ -1,0 +1,508 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import PriceCard from '../../components/PriceCard.astro';
+import CTASection from '../../components/CTASection.astro';
+import Icon from '../../components/Icon.astro';
+import { services } from '../../data/services';
+import { prices } from '../../data/prices';
+import { business } from '../../data/business';
+
+export function getStaticPaths() {
+  return services.map(service => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+interface Props {
+  service: typeof services[0];
+}
+
+const { service } = Astro.props;
+
+// Find related pricing
+const relatedPricing = prices.find(p => p.icon === service.icon);
+
+// Generate service-specific content
+const serviceContent: Record<string, { intro: string; benefits: string[]; process: string[]; faq: { q: string; a: string }[] }> = {
+  'oven-cleaning': {
+    intro: 'A clean oven isn\'t just more pleasant to use – it\'s safer, more efficient, and helps your food taste better. Our professional single and double oven cleaning service removes all traces of burnt-on grease and carbon, leaving your oven looking and performing like new.',
+    benefits: [
+      'All racks and trays removed and cleaned in our dip tank',
+      'Oven door dismantled and cleaned between glass panels',
+      'Interior thoroughly degreased and cleaned',
+      'Fan and fan cover cleaned',
+      'Oven seals wiped down',
+      'Safe, non-caustic cleaning products',
+    ],
+    process: [
+      'We protect your floor and surrounding area',
+      'All removable parts are taken to our cleaning tank',
+      'The oven interior is treated with our specialist solution',
+      'Door glass is dismantled and cleaned',
+      'Everything is reassembled and polished',
+      'Final inspection to ensure perfect results',
+    ],
+    faq: [
+      { q: 'How long does an oven clean take?', a: 'A single oven typically takes 1-1.5 hours, a double oven 2-2.5 hours.' },
+      { q: 'Do I need to heat the oven first?', a: 'No – please ensure the oven is cold before we arrive.' },
+      { q: 'Will there be a smell?', a: 'Our products are non-caustic and fume-free. There may be a slight cleaning smell that fades quickly.' },
+    ],
+  },
+  'range-cooker-cleaning': {
+    intro: 'Range cookers are the heart of many kitchens, but their size and complexity can make them daunting to clean. Our specialist range cooker cleaning service covers all makes and models, from compact 90cm ranges to large 110cm+ models.',
+    benefits: [
+      'All oven cavities cleaned inside and out',
+      'Hob and burners professionally cleaned',
+      'Multiple door glass panels dismantled and cleaned',
+      'All racks and trays soaked and cleaned',
+      'Control panels carefully cleaned',
+      'Chrome and stainless finishes polished',
+    ],
+    process: [
+      'Assessment of your range cooker model',
+      'Careful removal of all detachable parts',
+      'Specialist dip tank cleaning for racks',
+      'Multi-cavity cleaning of all oven sections',
+      'Hob and burner cleaning',
+      'Final reassembly and polish',
+    ],
+    faq: [
+      { q: 'Do you clean all range cooker brands?', a: 'Yes – Rangemaster, AGA, Falcon, Stoves, Smeg, Mercury, and more.' },
+      { q: 'How long does a range cooker clean take?', a: 'Depending on size: 1-door 2 hours, 2-door 2.5 hours, 3+ doors 3+ hours.' },
+      { q: 'Do you clean the hob as well?', a: 'Yes, the hob is included in our range cooker cleaning service.' },
+    ],
+  },
+  'aga-cleaning': {
+    intro: 'AGAs and Rayburns require specialist knowledge and care. These iconic cookers have unique features that need expert attention. Our AGA cleaning service is designed specifically for these classic appliances.',
+    benefits: [
+      'Understanding of AGA/Rayburn construction',
+      'Careful cleaning of enamel surfaces',
+      'Chrome lids polished to perfection',
+      'Hotplates and lids cleaned',
+      'Oven interiors deep cleaned',
+      'Safe products suitable for AGAs',
+    ],
+    process: [
+      'Specialist assessment of your AGA model',
+      'Cleaning of chrome lids and covers',
+      'Hotplate cleaning and care',
+      'Oven cavity cleaning',
+      'Enamel surfaces carefully cleaned',
+      'Final polish and inspection',
+    ],
+    faq: [
+      { q: 'Do you work on all AGA models?', a: 'Yes, we clean electric, gas, and traditional AGAs.' },
+      { q: 'Do I need to turn my AGA off?', a: 'We can discuss this when you book – it depends on the model and type of clean.' },
+      { q: 'Can you clean Rayburns too?', a: 'Yes, we clean AGAs, Rayburns, and similar range-style cookers.' },
+    ],
+  },
+  'hob-cleaning': {
+    intro: 'Your hob takes a lot of daily use and can quickly become covered in grease and burnt-on food. Our professional hob cleaning service tackles gas, electric, and induction hobs, restoring them to a like-new condition.',
+    benefits: [
+      'All burner caps and pan supports removed',
+      'Thorough degreasing of all surfaces',
+      'Burnt-on residue carefully removed',
+      'Control knobs cleaned',
+      'Glass or ceramic surfaces polished',
+      'Safe for all hob types',
+    ],
+    process: [
+      'Assessment of hob type and condition',
+      'Removal of all removable parts',
+      'Cleaning of burners and supports',
+      'Deep clean of hob surface',
+      'Cleaning of control knobs',
+      'Reassembly and final polish',
+    ],
+    faq: [
+      { q: 'Do you clean induction hobs?', a: 'Yes, we clean gas, electric, ceramic, and induction hobs.' },
+      { q: 'Can you remove scratches from ceramic hobs?', a: 'Light scratches may improve with cleaning, but deep scratches are permanent.' },
+      { q: 'How long does a hob clean take?', a: 'Hob cleaning typically takes 30-45 minutes.' },
+    ],
+  },
+  'extractor-hood-cleaning': {
+    intro: 'Extractor hoods work hard to remove grease and steam from your kitchen, but they need regular cleaning to work effectively. Our extractor cleaning service removes built-up grease from filters, fans, and housings.',
+    benefits: [
+      'Metal filters removed and degreased',
+      'Hood interior cleaned',
+      'Fan blades cleaned where accessible',
+      'Light covers cleaned',
+      'Exterior polished',
+      'Improved extraction efficiency',
+    ],
+    process: [
+      'Careful removal of grease filters',
+      'Filters cleaned in our dip tank',
+      'Hood interior degreased',
+      'Light covers cleaned',
+      'Exterior surfaces polished',
+      'Filters replaced and tested',
+    ],
+    faq: [
+      { q: 'Will cleaning improve my extractor\'s performance?', a: 'Yes, removing grease build-up significantly improves airflow.' },
+      { q: 'How often should extractors be cleaned?', a: 'We recommend professional cleaning every 6-12 months depending on use.' },
+      { q: 'Do you replace filters?', a: 'We clean reusable filters. If yours needs replacing, we can advise.' },
+    ],
+  },
+  'microwave-cleaning': {
+    intro: 'Microwaves can quickly become splattered with food residue. Our microwave cleaning service covers both standard microwaves and combination ovens, leaving them fresh and hygienic.',
+    benefits: [
+      'Interior thoroughly cleaned',
+      'Turntable and roller ring cleaned',
+      'Door and seals cleaned',
+      'Exterior wiped and polished',
+      'Food odours eliminated',
+      'Safe, food-grade products',
+    ],
+    process: [
+      'Removal of turntable and accessories',
+      'Interior deep clean',
+      'Door and seal cleaning',
+      'Exterior cleaning',
+      'Reassembly and testing',
+      'Final odour check',
+    ],
+    faq: [
+      { q: 'Do you clean combination microwaves?', a: 'Yes, we clean both standard microwaves and combi ovens.' },
+      { q: 'Can you remove burnt smells?', a: 'Yes, our cleaning removes food residues that cause odours.' },
+      { q: 'How long does microwave cleaning take?', a: 'Microwave cleaning typically takes 20-30 minutes.' },
+    ],
+  },
+  'bbq-cleaning': {
+    intro: 'A clean barbecue isn\'t just more pleasant to use – it\'s safer and produces better-tasting food. Our BBQ cleaning service prepares your barbecue for the season or freshens it up after heavy use.',
+    benefits: [
+      'Grill grates thoroughly cleaned',
+      'Burners and heat diffusers cleaned',
+      'Grease trays emptied and cleaned',
+      'Lid interior degreased',
+      'External surfaces cleaned',
+      'Carbon build-up removed',
+    ],
+    process: [
+      'Assessment of BBQ condition',
+      'Removal of grates and accessories',
+      'Cleaning in our dip tank',
+      'Burner and interior cleaning',
+      'Grease trap cleaning',
+      'Reassembly and polish',
+    ],
+    faq: [
+      { q: 'When should I have my BBQ cleaned?', a: 'We recommend cleaning at the start of the season and after heavy use.' },
+      { q: 'Do you clean charcoal BBQs?', a: 'Yes, we clean gas, charcoal, and electric barbecues.' },
+      { q: 'Can you remove rust?', a: 'We can clean rust but severely corroded parts may need replacement.' },
+    ],
+  },
+  'oven-repairs': {
+    intro: 'While we\'re cleaning your oven, we can also take care of minor repairs. Bulb replacements and element replacements are quick fixes that can make a big difference to your oven\'s function.',
+    benefits: [
+      'Bulb replacement while we clean',
+      'Element replacement available',
+      'Parts sourced at competitive prices',
+      'Fitted by experienced technicians',
+      'Saves you time and hassle',
+      'Oven working perfectly when we leave',
+    ],
+    process: [
+      'Issue identified during cleaning',
+      'Repair options discussed with you',
+      'Price agreed before proceeding',
+      'Repair carried out',
+      'Oven tested',
+      'Warranty on parts',
+    ],
+    faq: [
+      { q: 'Can you fix all oven problems?', a: 'We handle bulbs and elements. For major issues, we can recommend specialists.' },
+      { q: 'Do I need to book repairs separately?', a: 'No, we can often do repairs during your cleaning appointment.' },
+      { q: 'How much do repairs cost?', a: 'Bulb replacement from £8, element replacement from £80.' },
+    ],
+  },
+};
+
+const content = serviceContent[service.slug] || {
+  intro: service.shortDescription,
+  benefits: ['Professional cleaning', 'Safe products', 'Thorough results'],
+  process: ['Preparation', 'Cleaning', 'Final inspection'],
+  faq: [],
+};
+
+// Schema markup
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": service.title,
+  "description": service.shortDescription,
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": business.name,
+    "telephone": business.phone,
+    "email": business.email,
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Christchurch",
+      "addressRegion": "Dorset",
+      "postalCode": business.postcode,
+      "addressCountry": "GB"
+    }
+  },
+  "areaServed": {
+    "@type": "Place",
+    "name": "Dorset, UK"
+  }
+};
+---
+
+<Layout 
+  title={service.title}
+  description={`Professional ${service.title.toLowerCase()} in Dorset. ${service.shortDescription}`}
+  canonicalUrl={`/services/${service.slug}/`}
+>
+  <Hero 
+    headline={service.title}
+    subheadline={service.shortDescription}
+    compact
+  />
+  
+  <section class="section">
+    <div class="container">
+      <div class="service-intro">
+        <p>{content.intro}</p>
+      </div>
+      
+      <div class="service-grid">
+        <div class="service-main">
+          <h2>What's Included</h2>
+          <ul class="benefits-list">
+            {content.benefits.map(benefit => (
+              <li>
+                <Icon name="check" size={20} />
+                <span>{benefit}</span>
+              </li>
+            ))}
+          </ul>
+          
+          <h2>Our Process</h2>
+          <ol class="process-list">
+            {content.process.map((step, i) => (
+              <li>
+                <span class="process-number">{i + 1}</span>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+        
+        <div class="service-sidebar">
+          {relatedPricing && (
+            <div class="sidebar-section">
+              <h3>Pricing</h3>
+              <PriceCard category={relatedPricing} />
+            </div>
+          )}
+          
+          <div class="sidebar-section">
+            <h3>Book Now</h3>
+            <div class="book-card card card-gold">
+              <p>Ready to book your {service.title.toLowerCase()}?</p>
+              <a href={`tel:${business.phone}`} class="btn btn-primary" style="width: 100%; margin-bottom: var(--space-sm);">
+                Call {business.contactName}
+              </a>
+              <a href="/Sparkling-Clean/contact/" class="btn btn-outline-gold" style="width: 100%;">
+                Book Online
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  {content.faq.length > 0 && (
+    <section class="section bg-elevated">
+      <div class="container">
+        <div class="section-header">
+          <h2>Frequently Asked Questions</h2>
+          <div class="accent-line"></div>
+        </div>
+        <div class="faq-grid">
+          {content.faq.map(item => (
+            <div class="faq-item card">
+              <h3>{item.q}</h3>
+              <p>{item.a}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+  
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Other Services</h2>
+        <div class="accent-line"></div>
+      </div>
+      <div class="related-services">
+        {services.filter(s => s.slug !== service.slug).slice(0, 4).map(s => (
+          <a href={`/Sparkling-Clean/services/${s.slug}/`} class="related-link">
+            <Icon name={s.icon} size={20} />
+            <span>{s.title}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <CTASection />
+</Layout>
+
+<script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
+
+<style>
+  .service-intro {
+    max-width: 800px;
+    margin: 0 auto var(--space-2xl);
+    text-align: center;
+  }
+  
+  .service-intro p {
+    font-size: 1.125rem;
+    line-height: 1.7;
+  }
+  
+  .service-grid {
+    display: grid;
+    gap: var(--space-2xl);
+  }
+  
+  @media (min-width: 1024px) {
+    .service-grid {
+      grid-template-columns: 1fr 350px;
+    }
+  }
+  
+  .service-main h2 {
+    font-size: 1.5rem;
+    color: var(--color-text);
+    margin-bottom: var(--space-md);
+    margin-top: var(--space-xl);
+  }
+  
+  .service-main h2:first-child {
+    margin-top: 0;
+  }
+  
+  .benefits-list {
+    list-style: none;
+  }
+  
+  .benefits-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+    color: var(--color-text-muted);
+  }
+  
+  .benefits-list :global(svg) {
+    color: var(--color-gold);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  
+  .process-list {
+    list-style: none;
+    counter-reset: process;
+  }
+  
+  .process-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+    color: var(--color-text-muted);
+  }
+  
+  .process-number {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-gold);
+    color: var(--color-bg);
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  
+  .sidebar-section {
+    margin-bottom: var(--space-lg);
+  }
+  
+  .sidebar-section h3 {
+    font-size: 1rem;
+    color: var(--color-text);
+    margin-bottom: var(--space-sm);
+  }
+  
+  .book-card p {
+    margin-bottom: var(--space-md);
+    font-size: 0.9375rem;
+  }
+  
+  .faq-grid {
+    display: grid;
+    gap: var(--space-md);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  @media (min-width: 768px) {
+    .faq-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .faq-item h3 {
+    font-size: 1rem;
+    color: var(--color-gold);
+    margin-bottom: var(--space-sm);
+  }
+  
+  .faq-item p {
+    font-size: 0.9375rem;
+    margin: 0;
+  }
+  
+  .related-services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    justify-content: center;
+  }
+  
+  .related-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+  
+  .related-link:hover {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+  }
+  
+  .related-link :global(svg) {
+    color: var(--color-gold);
+  }
+</style>

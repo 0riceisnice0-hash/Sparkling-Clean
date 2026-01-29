@@ -1,0 +1,275 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import CTASection from '../components/CTASection.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../data/business';
+import { services } from '../data/services';
+
+const applianceTypes = [
+  'Single Oven',
+  'Double Oven',
+  'Range Cooker',
+  'AGA',
+  'Hob',
+  'Extractor Hood',
+  'Microwave',
+  'BBQ',
+  'Combination',
+  'Other',
+];
+---
+
+<Layout 
+  title="Contact & Book Online"
+  description="Book your professional oven cleaning today. Call Aaron on 07572319948 or fill out our booking form. Fast, friendly service across Dorset."
+  canonicalUrl="/contact/"
+>
+  <Hero 
+    headline="Contact & Book Online"
+    subheadline="Ready to get started? Get in touch and we'll make your oven sparkle."
+    compact
+  />
+  
+  <section class="section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-methods">
+          <h2>Get In Touch</h2>
+          <div class="accent-line" style="margin-left: 0;"></div>
+          
+          <p>The easiest way to book is to give me a call. I can usually give you a quote over the phone and arrange a convenient time.</p>
+          
+          <div class="contact-buttons">
+            <a href={`tel:${business.phone}`} class="contact-btn">
+              <span class="contact-btn-icon">
+                <Icon name="phone" size={24} />
+              </span>
+              <span class="contact-btn-content">
+                <span class="contact-btn-label">Call Aaron</span>
+                <span class="contact-btn-value">{business.phoneFormatted}</span>
+              </span>
+            </a>
+            
+            <a href={`mailto:${business.email}`} class="contact-btn">
+              <span class="contact-btn-icon">
+                <Icon name="email" size={24} />
+              </span>
+              <span class="contact-btn-content">
+                <span class="contact-btn-label">Email</span>
+                <span class="contact-btn-value">{business.email}</span>
+              </span>
+            </a>
+            
+            <a href={business.whatsappLink} class="contact-btn" target="_blank" rel="noopener noreferrer">
+              <span class="contact-btn-icon">
+                <Icon name="whatsapp" size={24} />
+              </span>
+              <span class="contact-btn-content">
+                <span class="contact-btn-label">WhatsApp</span>
+                <span class="contact-btn-value">Send a message</span>
+              </span>
+            </a>
+          </div>
+          
+          <div class="business-info">
+            <h3>Service Area</h3>
+            <p>{business.serviceArea}</p>
+            
+            <h3>Based In</h3>
+            <p>{business.baseLocation}</p>
+          </div>
+        </div>
+        
+        <div class="contact-form-wrapper">
+          <h2>Book Online</h2>
+          <div class="accent-line" style="margin-left: 0;"></div>
+          
+          <!-- 
+            FORM INTEGRATION NOTE:
+            This form is configured for Formspree. To activate:
+            1. Create a free account at formspree.io
+            2. Create a new form
+            3. Replace YOUR_FORM_ID below with your form ID
+            
+            Alternatively, you can integrate with other services like:
+            - Netlify Forms (add netlify attribute)
+            - EmailJS
+            - Basin
+            - Any other static form handler
+          -->
+          <form 
+            action="https://formspree.io/f/YOUR_FORM_ID" 
+            method="POST" 
+            class="booking-form"
+          >
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name" class="form-label">Your Name *</label>
+                <input type="text" id="name" name="name" class="form-input" required />
+              </div>
+              <div class="form-group">
+                <label for="phone" class="form-label">Phone Number *</label>
+                <input type="tel" id="phone" name="phone" class="form-input" required />
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" id="email" name="email" class="form-input" />
+              </div>
+              <div class="form-group">
+                <label for="postcode" class="form-label">Postcode *</label>
+                <input type="text" id="postcode" name="postcode" class="form-input" required />
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="appliance" class="form-label">Appliance Type *</label>
+                <select id="appliance" name="appliance" class="form-select" required>
+                  <option value="">Select appliance...</option>
+                  {applianceTypes.map(type => (
+                    <option value={type}>{type}</option>
+                  ))}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="date" class="form-label">Preferred Date</label>
+                <input type="date" id="date" name="preferred_date" class="form-input" />
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="message" class="form-label">Additional Details</label>
+              <textarea id="message" name="message" class="form-textarea" placeholder="Tell us about your appliance, any specific concerns, or preferred times..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+              Send Booking Request
+            </button>
+            
+            <p class="form-note">We'll get back to you as soon as possible to confirm your booking.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <CTASection style="subtle" />
+</Layout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    gap: var(--space-2xl);
+  }
+  
+  @media (min-width: 1024px) {
+    .contact-grid {
+      grid-template-columns: 1fr 1.2fr;
+    }
+  }
+  
+  .contact-methods h2,
+  .contact-form-wrapper h2 {
+    margin-bottom: var(--space-sm);
+  }
+  
+  .contact-methods > p {
+    font-size: 1.0625rem;
+    margin-bottom: var(--space-lg);
+  }
+  
+  .contact-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+  }
+  
+  .contact-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+  
+  .contact-btn:hover {
+    border-color: var(--color-gold);
+    transform: translateX(4px);
+  }
+  
+  .contact-btn-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), transparent);
+    border-radius: var(--radius-md);
+    color: var(--color-gold);
+  }
+  
+  .contact-btn-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .contact-btn-label {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+  
+  .contact-btn-value {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+  
+  .business-info h3 {
+    font-size: 0.9375rem;
+    color: var(--color-gold);
+    margin-bottom: var(--space-xs);
+  }
+  
+  .business-info p {
+    margin-bottom: var(--space-md);
+  }
+  
+  .contact-form-wrapper {
+    padding: var(--space-xl);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  
+  .booking-form {
+    margin-top: var(--space-lg);
+  }
+  
+  .form-row {
+    display: grid;
+    gap: var(--space-md);
+  }
+  
+  @media (min-width: 640px) {
+    .form-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  .form-note {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-text-subtle);
+    margin-top: var(--space-md);
+    margin-bottom: 0;
+  }
+</style>

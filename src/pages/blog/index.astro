@@ -1,0 +1,126 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import CTASection from '../../components/CTASection.astro';
+import { blogPosts } from '../../data/blog';
+---
+
+<Layout 
+  title="Blog"
+  description="Oven cleaning tips, advice and guides from Sparkling Clean. Learn how to keep your oven clean and when to call the professionals."
+  canonicalUrl="/blog/"
+>
+  <Hero 
+    headline="Oven Cleaning Blog"
+    subheadline="Tips, advice and guides to help you keep your kitchen sparkling."
+    compact
+  />
+  
+  <section class="section">
+    <div class="container">
+      <div class="blog-grid">
+        {blogPosts.map(post => (
+          <a href={`/Sparkling-Clean/blog/${post.slug}/`} class="blog-card card">
+            <div class="blog-image">
+              <div class="placeholder-image">
+                <span>Blog Image</span>
+              </div>
+            </div>
+            <div class="blog-content">
+              <time datetime={post.date} class="blog-date">
+                {new Date(post.date).toLocaleDateString('en-GB', { 
+                  day: 'numeric', 
+                  month: 'long', 
+                  year: 'numeric' 
+                })}
+              </time>
+              <h2>{post.title}</h2>
+              <p>{post.excerpt}</p>
+              <span class="blog-link">
+                Read more →
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <CTASection style="subtle" />
+</Layout>
+
+<style>
+  .blog-grid {
+    display: grid;
+    gap: var(--space-lg);
+  }
+  
+  @media (min-width: 640px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .blog-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .blog-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    padding: 0;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+  }
+  
+  .blog-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-gold);
+  }
+  
+  .blog-image {
+    aspect-ratio: 16 / 9;
+  }
+  
+  .blog-image .placeholder-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+  
+  .blog-content {
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  
+  .blog-date {
+    font-size: 0.75rem;
+    color: var(--color-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-xs);
+  }
+  
+  .blog-content h2 {
+    font-size: 1.125rem;
+    margin-bottom: var(--space-sm);
+    color: var(--color-text);
+  }
+  
+  .blog-content p {
+    font-size: 0.9375rem;
+    flex-grow: 1;
+    margin-bottom: var(--space-sm);
+  }
+  
+  .blog-link {
+    color: var(--color-gold);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+</style>

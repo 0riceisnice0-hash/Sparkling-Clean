@@ -1,0 +1,96 @@
+---
+import type { Review } from '../data/reviews';
+
+export interface Props {
+  review: Review;
+}
+
+const { review } = Astro.props;
+---
+
+<div class="review-card card">
+  <div class="review-header">
+    <div class="review-avatar">
+      {review.name.charAt(0)}
+    </div>
+    <div class="review-meta">
+      <span class="review-name">{review.name}</span>
+      <span class="review-location">{review.location}</span>
+    </div>
+  </div>
+  <p class="review-text">"{review.text}"</p>
+  <div class="review-footer">
+    <span class="review-service">{review.service}</span>
+    <span class="review-date">{review.date}</span>
+  </div>
+</div>
+
+<style>
+  .review-card {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .review-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+  
+  .review-avatar {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-gold-dark), var(--color-gold));
+    color: var(--color-bg);
+    font-size: 1.25rem;
+    font-weight: 600;
+    border-radius: 50%;
+  }
+  
+  .review-meta {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .review-name {
+    font-weight: 500;
+    color: var(--color-text);
+  }
+  
+  .review-location {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+  
+  .review-text {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    flex-grow: 1;
+    margin-bottom: var(--space-md);
+  }
+  
+  .review-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--color-border);
+  }
+  
+  .review-service {
+    font-size: 0.875rem;
+    color: var(--color-gold);
+    font-weight: 500;
+  }
+  
+  .review-date {
+    font-size: 0.75rem;
+    color: var(--color-text-subtle);
+  }
+</style>

@@ -1,0 +1,91 @@
+---
+import type { PriceCategory } from '../data/prices';
+import Icon from './Icon.astro';
+
+export interface Props {
+  category: PriceCategory;
+}
+
+const { category } = Astro.props;
+---
+
+<div class="price-card card card-gold">
+  <div class="price-header">
+    <div class="price-icon">
+      <Icon name={category.icon} size={28} />
+    </div>
+    <h3 class="price-title">{category.title}</h3>
+  </div>
+  <ul class="price-list">
+    {category.items.map(item => (
+      <li class="price-item">
+        <span class="price-name">{item.name}</span>
+        <span class="price-divider"></span>
+        <span class="price-value">{item.price}</span>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .price-card {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .price-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .price-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05));
+    border-radius: var(--radius-md);
+    color: var(--color-gold);
+  }
+  
+  .price-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  
+  .price-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  
+  .price-item {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-xs);
+  }
+  
+  .price-name {
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+  }
+  
+  .price-divider {
+    flex-grow: 1;
+    border-bottom: 1px dotted var(--color-border);
+    min-width: 20px;
+  }
+  
+  .price-value {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-gold);
+  }
+</style>
